@@ -12,22 +12,18 @@ struct MovieManager {
     private let baseURL = "https://www.omdbapi.com/"
     private let apiKey = "9f1a4b55"
     
-    //  item param  i=tt3896198
-    private let parameter = "i=tt3896198"
-    
     let movies = [MovieModel]()
     
     //  search param  s=runner
-//    let parameter = "s=runner"
+    private let parameter = "runner"
     
-    func fetchMovies() -> [MovieModel] {
+    func fetchMoviesData() {
         
-        let urlString = "\(baseURL)?apikey=\(apiKey)&\(parameter)"
+        let urlString = "\(baseURL)?apikey=\(apiKey)&s=\(parameter)"
         print(urlString)
         
         self.performReques(with: urlString)
         
-        return movies
     }
     
     private func performReques(with urlString: String) {
@@ -69,22 +65,18 @@ struct MovieManager {
         do {
             let decodedData = try decoder.decode(MovieData.self, from: data)
             
-            let title = decodedData.title
-            let year = decodedData.year
-            let poster = decodedData.poster
-            
-            var movies: [MovieModel] = []
-            let movie = MovieModel(title: title, year: year, poster: poster)
-            
-            movies.append(movie)
-            
-            print(title)
-            print(year)
-            
+            decodedData.search.enumerated().forEach({ index, element in
+                let title = element.title
+                let year = element.year
+                _ = element.poster
+                
+                print("Title: \(title). Year: \(year)")
+            })
+
             return movies
             
         } catch {
-            print(error.localizedDescription)
+            print("JSON Error: \(error.localizedDescription)")
             return nil
         }
     }

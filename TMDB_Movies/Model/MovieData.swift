@@ -7,13 +7,21 @@
 
 import UIKit
 
-struct MovieData: Decodable {
-    
-    let title: String
-    let year: String
+// MARK: - MovieData
+struct MovieData: Codable {
+    let search: [Search]
+
+    enum CodingKeys: String, CodingKey {
+        case search = "Search"
+    }
+}
+
+// MARK: - Search
+struct Search: Codable {
+    let title, year: String
     let poster: String
-    
-    private enum CodingKeys: String, CodingKey {
+
+    enum CodingKeys: String, CodingKey {
         case title = "Title"
         case year = "Year"
         case poster = "Poster"

@@ -6,20 +6,24 @@
 //
 
 import UIKit
+import Kingfisher
 
 class CustomCell: UITableViewCell {
     
     var moviewImageView = UIImageView()
     var movieTitleLabel = UILabel()
-
+    var movieYearLabel = UILabel()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         addSubview(moviewImageView)
         addSubview(movieTitleLabel)
+        addSubview(movieYearLabel)
         
         configureImageView()
         configureTitleLabel()
+        configureYearLabel()
         
     }
     
@@ -44,15 +48,31 @@ class CustomCell: UITableViewCell {
         movieTitleLabel.adjustsFontSizeToFitWidth = true
         
         movieTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        movieTitleLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        movieTitleLabel.topAnchor.constraint(equalTo: centerYAnchor, constant: -30).isActive = true
         movieTitleLabel.leadingAnchor.constraint(equalTo: moviewImageView.trailingAnchor, constant: 20).isActive = true
-        movieTitleLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        movieTitleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         movieTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
     }
     
+    func configureYearLabel() {
+        movieYearLabel.numberOfLines = 0
+        movieYearLabel.adjustsFontSizeToFitWidth = true
+        
+        movieYearLabel.translatesAutoresizingMaskIntoConstraints = false
+        movieYearLabel.topAnchor.constraint(equalTo: movieTitleLabel.bottomAnchor, constant: 12).isActive = true
+        movieYearLabel.leadingAnchor.constraint(equalTo: moviewImageView.trailingAnchor, constant: 20).isActive = true
+        movieYearLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        movieYearLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
+    }
+    
     func set(movie: MovieModel) {
-//        moviewImageView.image = movie.image
-        movieTitleLabel.text = movie.title
+        
+            self.moviewImageView.kf.indicatorType = .activity
+            self.moviewImageView.kf.setImage(with: URL(string: movie.poster))
+            
+            self.movieTitleLabel.text = movie.title
+            
+            self.movieYearLabel.text = movie.year
         
     }
     

@@ -15,10 +15,11 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        movies = movieManager.fetchMovies()
+        // assigning test data
+        movies = fetchData()
         
-//        let movie1 = MovieModel(title: "Test", year: "2022", poster: "post")
-//        movies.append(movie1)
+        // calling real Data Fetcher
+        movieManager.fetchMoviesData()
 
         tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
     }
@@ -48,15 +49,15 @@ class TableViewController: UITableViewController {
 
 }
 
+
+// MARK: - Hardcoded Test Data
 extension TableViewController {
     
-//    func fetchData() -> [MoviesModel] {
-//
-//        let movie1 = MoviesModel(title: "Halo", image: UIImage(named: "Halo")!)
-//        let movie2 = MoviesModel(title: "Moon Knight", image: UIImage(named: "MoonKnight")!)
-//        let movie3 = MoviesModel(title: "The Batman", image: UIImage(named: "TheBatman")!)
-//        let movie4 = MoviesModel(title: "Uncharted", image: UIImage(named: "Uncharted")!)
+    func fetchData() -> [MovieModel] {
+
+        let movie1 = MovieModel(title: "Blade Runner 2049", year: "2017", poster: "https://www.themoviedb.org/t/p/w1280/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg")
+        let movie2 = MovieModel(title: "The Maze Runner", year: "2014", poster: "https://www.themoviedb.org/t/p/w1280/ode14q7WtDugFDp78fo9lCsmay9.jpg")
         
-//        return [movie1, movie2, movie3, movie4]
-//    }
+        return [movie1, movie2]
+    }
 }
