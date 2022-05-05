@@ -8,15 +8,16 @@
 import UIKit
 import Kingfisher
 
-class CustomCell: UITableViewCell {
+class CustomCell: UITableViewCell {  //namimg
     
-    var moviewImageView = UIImageView()
+    var moviewImageView = UIImageView() //naming
     var movieTitleLabel = UILabel()
     var movieYearLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+//        [moviewImageView, movieTitleLabel].forEach(addSubview)
         addSubview(moviewImageView)
         addSubview(movieTitleLabel)
         addSubview(movieYearLabel)
@@ -31,7 +32,7 @@ class CustomCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureImageView() {
+   private func configureImageView() {
         moviewImageView.layer.cornerRadius = 10
         moviewImageView.clipsToBounds = true
         

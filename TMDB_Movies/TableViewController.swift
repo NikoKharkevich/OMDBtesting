@@ -15,11 +15,14 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // assigning test data
-        movies = fetchData()
-        
         // calling real Data Fetcher
-        movieManager.fetchMoviesData()
+        movieManager.fetchMoviesData { movies in
+            if let decodedMovies = movies {
+                self.movies = decodedMovies
+            } else {
+                print("Error decoding movies")
+            }
+        }
 
         tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
     }
@@ -31,7 +34,7 @@ class TableViewController: UITableViewController {
         return movies.count
     }
 
-
+// set -> configure
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomCell
         cell.set(movie: movies[indexPath.row])
@@ -40,7 +43,7 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120
+        return 120 // ?
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -51,13 +54,13 @@ class TableViewController: UITableViewController {
 
 
 // MARK: - Hardcoded Test Data
-extension TableViewController {
-    
-    func fetchData() -> [MovieModel] {
-
-        let movie1 = MovieModel(title: "Blade Runner 2049", year: "2017", poster: "https://www.themoviedb.org/t/p/w1280/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg")
-        let movie2 = MovieModel(title: "The Maze Runner", year: "2014", poster: "https://www.themoviedb.org/t/p/w1280/ode14q7WtDugFDp78fo9lCsmay9.jpg")
-        
-        return [movie1, movie2]
-    }
-}
+//extension TableViewController {
+//
+//    func fetchData() -> [MovieModel] {
+//
+//        let movie1 = MovieModel(title: "Blade Runner 2049", year: "2017", poster: "https://www.themoviedb.org/t/p/w1280/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg")
+//        let movie2 = MovieModel(title: "The Maze Runner", year: "2014", poster: "https://www.themoviedb.org/t/p/w1280/ode14q7WtDugFDp78fo9lCsmay9.jpg")
+//
+//        return [movie1, movie2]
+//    }
+//}

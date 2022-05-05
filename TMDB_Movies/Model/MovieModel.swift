@@ -13,4 +13,9 @@ struct MovieModel {
     let year: String
     let poster: String
     
+    init(data: Search) {
+        self.title = data.title
+        self.poster = data.poster
+        self.year = data.year
+    }
 }
