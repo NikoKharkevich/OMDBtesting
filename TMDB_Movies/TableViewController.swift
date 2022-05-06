@@ -15,52 +15,40 @@ class TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // calling real Data Fetcher
+        // calling Data Fetcher
         movieManager.fetchMoviesData { movies in
+            print("Call fetcher")
+            
             if let decodedMovies = movies {
                 self.movies = decodedMovies
+                self.tableView.reloadData()
+                print("Fetcher success")
+
             } else {
-                print("Error decoding movies")
+                print("Fetcher Error")
             }
         }
 
-        tableView.register(CustomCell.self, forCellReuseIdentifier: "CustomCell")
+        tableView.register(MovieCell.self, forCellReuseIdentifier: "CustomCell")
     }
 
-    // MARK: - Table view data source
+    // MARK: - TableView Data Source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         return movies.count
     }
 
-// set -> configure
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomCell
-        cell.set(movie: movies[indexPath.row])
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! MovieCell
+        cell.configure(movie: movies[indexPath.row])
 
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 120 // ?
-    }
-    
+    // MARK: - TableView Delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
 
 }
-
-
-// MARK: - Hardcoded Test Data
-//extension TableViewController {
-//
-//    func fetchData() -> [MovieModel] {
-//
-//        let movie1 = MovieModel(title: "Blade Runner 2049", year: "2017", poster: "https://www.themoviedb.org/t/p/w1280/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg")
-//        let movie2 = MovieModel(title: "The Maze Runner", year: "2014", poster: "https://www.themoviedb.org/t/p/w1280/ode14q7WtDugFDp78fo9lCsmay9.jpg")
-//
-//        return [movie1, movie2]
-//    }
-//}

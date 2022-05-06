@@ -18,7 +18,7 @@ struct MovieManager {
     func fetchMoviesData(completion: @escaping(_ movies: [MovieModel]?) -> ()) {
         
         let urlString = "\(baseURL)?apikey=\(apiKey)&s=\(parameter)"
-        print(urlString)
+        print("Call URL string " + urlString)
         
         // Create a URL
         if let url = URL(string: urlString) {
@@ -39,37 +39,25 @@ struct MovieManager {
                 }
                 
                 // Decode JSON
-                
                 let decoder = JSONDecoder()
-
+                
                 do {
                     let decodedData = try decoder.decode(MovieData.self, from: safeData)
                     let movies = decodedData.search.map { MovieModel(data: $0) }
-                    print("Data")
-                    completion(movies)
-
+                    print("Received JSON Data")
+                    
+                    DispatchQueue.main.async {
+                        completion(movies)
+                    }
+                    
                 } catch {
                     print("JSON Error: \(error.localizedDescription)")
                     completion(nil)
                 }
                 
             }
-
+            
             task.resume()
         }
     }
 }
-
-
-//    private func parseJSON(_ data: Data) -> [MovieModel]? {
-//
-//        let decoder = JSONDecoder()
-//        do {
-//            let decodedData = try decoder.decode(MovieData.self, from: data)
-//
-//            return decodedData.search.map { MovieModel(data: $0) }
-//
-//        } catch {
-//            print("JSON Error: \(error.localizedDescription)")
-//            return nil
-//        }
