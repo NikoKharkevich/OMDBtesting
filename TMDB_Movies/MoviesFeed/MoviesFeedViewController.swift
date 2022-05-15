@@ -18,10 +18,9 @@ class MoviesFeedViewController: UIViewController, MoviesFeedDisplayLogic {
     
     var interactor: MoviesFeedBusinessLogic?
     var router: (NSObjectProtocol & MoviesFeedRoutingLogic)?
+    var worker = MoviesFeedService()
     
     var movies: [MovieModel] = []
-    var movieManager = MovieManager()
-    
     
     // MARK: Setup
     
@@ -61,7 +60,7 @@ class MoviesFeedViewController: UIViewController, MoviesFeedDisplayLogic {
             print("some displayData")
         case .displayMoviesFeed:
             
-            movieManager.fetchMoviesData { movies in
+            worker.fetchMoviesData { movies in
                 print("Call fetcher")
                 
                 if let decodedMovies = movies {
@@ -78,6 +77,8 @@ class MoviesFeedViewController: UIViewController, MoviesFeedDisplayLogic {
     
 }
 
+
+// MARK: TableView Methods
 extension MoviesFeedViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
