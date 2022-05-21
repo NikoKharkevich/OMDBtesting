@@ -12,10 +12,12 @@ struct MovieModel {
     let title: String
     let year: String
     let poster: String
+    let id: String
     
     init(data: Search) {
         self.title = data.title
         self.poster = data.poster
         self.year = data.year
+        self.id = data.id
     }
 }

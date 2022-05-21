@@ -9,29 +9,22 @@
 import UIKit
 
 protocol MoviesFeedBusinessLogic {
-    func makeRequest(request: MoviesFeed.Model.Request.RequestType)
+    func fetchAllMovies(request: MoviesFeed.Model.Request)
 }
 
 class MoviesFeedInteractor: MoviesFeedBusinessLogic {
     
     var presenter: MoviesFeedPresentationLogic?
-    var service: MoviesFeedService?
+    var service = MoviesNetworkService()
     
-    func makeRequest(request: MoviesFeed.Model.Request.RequestType) {
-        if service == nil {
-            service = MoviesFeedService()
-        }
+    func fetchAllMovies(request: MoviesFeed.Model.Request) {
         
-        switch request {
-            
-        case .some:
-            print("some interactor")
-        case .getFeed:
-            print("getFeed interactor")
-            
-            presenter?.presentData(response: .presentMoviesFeed)
-        }
-        
+        service.fetchMoviesData(completion: { data in
+            guard let data = data else { return }
+            print("MoviesFeedInteractor called")
+            self.presenter?.presentData(response: .presentMoviesFeed(data))
+        })
     }
-    
 }
+
+

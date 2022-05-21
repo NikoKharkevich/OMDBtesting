@@ -18,12 +18,15 @@ struct MovieData: Codable {
 
 // MARK: - Search
 struct Search: Codable {
-    let title, year: String
+    let title: String
+    let year: String
     let poster: String
+    let id: String
 
     enum CodingKeys: String, CodingKey {
         case title = "Title"
         case year = "Year"
         case poster = "Poster"
+        case id = "imdbID"
     }
 }

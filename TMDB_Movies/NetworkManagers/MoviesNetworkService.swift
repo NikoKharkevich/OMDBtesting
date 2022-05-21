@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct MoviesFeedService {
+struct MoviesNetworkService {
     
     
     private let baseURL = "https://www.omdbapi.com/"
@@ -47,6 +47,7 @@ struct MoviesFeedService {
                     let decodedData = try decoder.decode(MovieData.self, from: safeData)
                     let movies = decodedData.search.map { MovieModel(data: $0) }
                     print("Received JSON Data")
+                    print("------------------")
                     
                     DispatchQueue.main.async {
                         completion(movies)

@@ -19,11 +19,10 @@ class MoviesFeedPresenter: MoviesFeedPresentationLogic {
         
         switch response {
             
-        case .some:
-            print("some presenter")
-        case .presentMoviesFeed:
-            print("present Movies Feed")
-            viewController?.displayData(viewModel: .displayMoviesFeed)
+        case let .presentMoviesFeed(data):
+            print("MoviesFeedPresenter called")
+            print("------------------")
+            viewController?.displayData(viewModel: .displayMoviesFeed(data))
         }
     }
     
