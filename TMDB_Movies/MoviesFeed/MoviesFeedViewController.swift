@@ -13,8 +13,8 @@ import Kingfisher
  HOME WORK
  
  1. Fix coments +
- 2. Create Detail Screen ( image, title) - imageVIew + TextField + Button
- 3. Move between 2 VC
+ 2. Create Detail Screen ( image, title) - imageVIew + TextField + Button +
+ 3. Move between 2 VC +-
  4. 2 VC -  move data -> edit data -> on 1 VC data changed ( если нажать на кнопку - возвращаемся на первый экран)
  
  PS. При изменении данных на втором экране - на первом должно поменятся.
@@ -24,12 +24,12 @@ protocol MoviesFeedDisplayLogic: AnyObject {
     func displayData(viewModel: MoviesFeed.ViewModel.ViewModelData)
 }
 
-class MoviesFeedViewController: UIViewController, MoviesFeedDisplayLogic {
+class MoviesFeedViewController: UIViewController {
     
     @IBOutlet weak var moviesTableView: UITableView!
     
     var interactor: MoviesFeedBusinessLogic?
-    var router: MoviesFeedRoutingLogic?
+    var router: (MoviesFeedRoutingLogic & MovieListDataPassing)?
     
     var movies: [MovieModel] = []
     
@@ -58,21 +58,10 @@ class MoviesFeedViewController: UIViewController, MoviesFeedDisplayLogic {
         }
     }
     
-    // MARK: Object lifecycle
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setup()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
-    
     // MARK: View lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
         moviesTableView.register(MovieCell.self, forCellReuseIdentifier: "MovieCell")
         fetchAllMovies()
     }
@@ -81,21 +70,7 @@ class MoviesFeedViewController: UIViewController, MoviesFeedDisplayLogic {
         let request = MoviesFeed.Request()
         interactor?.fetchAllMovies(request: request)
     }
-    
-    
-    func displayData(viewModel: MoviesFeed.ViewModel.ViewModelData) {
-        
-        switch viewModel {
-        case let .displayMoviesFeed(data):
-            movies = data
-            DispatchQueue.main.async {
-                self.moviesTableView.reloadData()
-            }
-        }
-    }
-    
 }
-
 
 // MARK: TableView Methods
 extension MoviesFeedViewController: UITableViewDelegate, UITableViewDataSource {
@@ -116,20 +91,29 @@ extension MoviesFeedViewController: UITableViewDelegate, UITableViewDataSource {
         
         let movieId = movies[indexPath.row].id
         //        let movieId = "tt1790864"
-        performSegue(withIdentifier: "toMovieDetails", sender: ["movieId": movieId])
+//        performSegue(withIdentifier: "toMovieDetails", sender: ["movieId": movieId])
         
-//                guard let detailsVC = storyboard?.instantiateViewController(withIdentifier: "MovieDetailsViewController") as? MovieDetailsViewController else { return }
-//                present(detailsVC, animated: true)
-        //        navigationController?.pushViewController(detailsVC, animated: true)
-        //
-        //        print("------------------")
-        //
+        guard let detailsVC = storyboard?.instantiateViewController(withIdentifier: "MovieDetailsViewController") as? MovieDetailsViewController else { return }
+        present(detailsVC, animated: true)
+//        navigationController?.pushViewController(detailsVC, animated: true)
+        detailsVC.movieLabelTextField?.text = movies[indexPath.row].title
+        detailsVC.moviePosterImageView?.kf.setImage(with: URL(string: movies[indexPath.row].poster))
         print("Movie pressed: \(movies[indexPath.row].title) / id: \(movieId)")
-        //
-//                detailsVC.movieLabelTextField?.text = movies[indexPath.row].title
-//                print("Movie in details VC: \(detailsVC.movieLabelTextField?.text ?? "❌")")
-//                print("------------------")
-//
-//                detailsVC.moviePosterImageView?.kf.setImage(with: URL(string: movies[indexPath.row].poster))
+        print("Movie in details VC: \(detailsVC.movieLabelTextField?.text ?? "❌")")
+        print("------------------")
+    }
+}
+
+// MARK: Display logic
+extension MoviesFeedViewController: MoviesFeedDisplayLogic {
+    func displayData(viewModel: MoviesFeed.ViewModel.ViewModelData) {
+        
+        switch viewModel {
+        case let .displayMoviesFeed(data):
+            movies = data
+            DispatchQueue.main.async {
+                self.moviesTableView.reloadData()
+            }
+        }
     }
 }

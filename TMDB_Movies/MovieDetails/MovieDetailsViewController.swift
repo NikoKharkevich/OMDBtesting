@@ -13,7 +13,7 @@ protocol MovieDetailsDisplayLogic: AnyObject {
     func displayMovieDetail(viewModel: MovieDetails.ViewModel)
 }
 
-class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
+class MovieDetailsViewController: UIViewController {
     
     var interactor: MovieDetailsBusinessLogic?
     var router: (MovieDetailsRoutingLogic & MovieDetailDataPassing)?
@@ -23,12 +23,16 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
     
     @IBAction func changeTextButton(_ sender: UIButton) {
         print(movieLabelTextField.text ?? "")
-        
+        changeTextField()
+        self.dismiss(animated: true, completion: nil)
+        navigationController?.popViewController(animated: true)
     }
     
-    
+    private func changeTextField() {
+
+    }
+ 
     // MARK: Setup
-    
     private func setup() {
         let viewController = self
         let interactor = MovieDetailsInteractor()
@@ -42,23 +46,12 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
     }
     
     // MARK: Routing
-    
-    
-    // MARK: Object lifecycle
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        setup()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setup()
-    }
+
     
     // MARK: View lifecycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -67,7 +60,6 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
     }
     
     // MARK: Do business logic
-    
     private func fetchMovieDetails() {
         
         guard let router = router,
@@ -76,7 +68,10 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
         interactor?.makeRequest(request: request)
         
     }
-    
+}
+
+// MARK: Display logic
+extension MovieDetailsViewController: MovieDetailsDisplayLogic {
     func displayMovieDetail(viewModel: MovieDetails.ViewModel) {
         
         let movie = viewModel.displayedMovie
@@ -86,5 +81,4 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
             self.moviePosterImageView?.kf.setImage(with: URL(string: movie.poster))
         }
     }
-    
 }
