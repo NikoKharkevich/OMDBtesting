@@ -10,11 +10,7 @@ import UIKit
 import Kingfisher
 
 protocol MovieDetailsDisplayLogic: AnyObject {
-    func displayData(viewModel: MovieDetails.Model.ViewModel.ViewModelData)
-}
-
-protocol TextFieldMovieDetailsDelegate: AnyObject {
-    func textChanged(text: String?)
+    func displayMovieDetail(viewModel: MovieDetails.ViewModel)
 }
 
 class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
@@ -27,11 +23,8 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
     
     @IBAction func changeTextButton(_ sender: UIButton) {
         print(movieLabelTextField.text ?? "")
-        textDelegate?.textChanged(text: movieLabelTextField.text)
+        
     }
-    
-    weak var textDelegate: TextFieldMovieDetailsDelegate?
-    var text: String? = nil
     
     
     // MARK: Setup
@@ -51,16 +44,47 @@ class MovieDetailsViewController: UIViewController, MovieDetailsDisplayLogic {
     // MARK: Routing
     
     
+    // MARK: Object lifecycle
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+    }
     
     // MARK: View lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setup()
     }
     
-    func displayData(viewModel: MovieDetails.Model.ViewModel.ViewModelData) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchMovieDetails()
+    }
+    
+    // MARK: Do business logic
+    
+    private func fetchMovieDetails() {
+        
+        guard let router = router,
+              let dataStore = router.dataStore else { return }
+        let request = MovieDetails.Request(movieId: dataStore.movieId)
+        interactor?.makeRequest(request: request)
         
     }
- 
+    
+    func displayMovieDetail(viewModel: MovieDetails.ViewModel) {
+        
+        let movie = viewModel.displayedMovie
+        
+        DispatchQueue.main.async {
+            self.movieLabelTextField.text = movie.title
+            self.moviePosterImageView?.kf.setImage(with: URL(string: movie.poster))
+        }
+    }
+    
 }

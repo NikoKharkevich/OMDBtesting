@@ -9,21 +9,13 @@
 import UIKit
 
 protocol MoviesFeedPresentationLogic {
-    func presentData(response: MoviesFeed.Model.Response.ResponseType)
+    func presentData(response: MoviesFeed.Response)
 }
 
 class MoviesFeedPresenter: MoviesFeedPresentationLogic {
     weak var viewController: MoviesFeedDisplayLogic?
     
-    func presentData(response: MoviesFeed.Model.Response.ResponseType) {
-        
-        switch response {
-            
-        case let .presentMoviesFeed(data):
-            print("MoviesFeedPresenter called")
-            print("------------------")
-            viewController?.displayData(viewModel: .displayMoviesFeed(data))
-        }
-    }
-    
+    func presentData(response: MoviesFeed.Response) {
+        viewController?.displayData(viewModel: .displayMoviesFeed(response.movies))
+    }    
 }

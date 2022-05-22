@@ -14,7 +14,6 @@
 		C0C93F42282C1E6D0015BB31 /* MoviesFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C93F3B282C1E6D0015BB31 /* MoviesFeedViewController.swift */; };
 		C0C93F43282C1E6D0015BB31 /* MoviesFeedInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C93F3C282C1E6D0015BB31 /* MoviesFeedInteractor.swift */; };
 		C0C93F4E283283340015BB31 /* MovieDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C93F47283283340015BB31 /* MovieDetailsPresenter.swift */; };
-		C0C93F4F283283340015BB31 /* MovieDetailsWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C93F48283283340015BB31 /* MovieDetailsWorker.swift */; };
 		C0C93F50283283340015BB31 /* MovieDetailsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C93F49283283340015BB31 /* MovieDetailsRouter.swift */; };
 		C0C93F51283283340015BB31 /* MovieDetailsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C93F4A283283340015BB31 /* MovieDetailsModels.swift */; };
 		C0C93F52283283340015BB31 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C93F4B283283340015BB31 /* MovieDetailsViewController.swift */; };
@@ -38,7 +37,6 @@
 		C0C93F3B282C1E6D0015BB31 /* MoviesFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesFeedViewController.swift; sourceTree = "<group>"; };
 		C0C93F3C282C1E6D0015BB31 /* MoviesFeedInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesFeedInteractor.swift; sourceTree = "<group>"; };
 		C0C93F47283283340015BB31 /* MovieDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsPresenter.swift; sourceTree = "<group>"; };
-		C0C93F48283283340015BB31 /* MovieDetailsWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsWorker.swift; sourceTree = "<group>"; };
 		C0C93F49283283340015BB31 /* MovieDetailsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsRouter.swift; sourceTree = "<group>"; };
 		C0C93F4A283283340015BB31 /* MovieDetailsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsModels.swift; sourceTree = "<group>"; };
 		C0C93F4B283283340015BB31 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
@@ -103,7 +101,6 @@
 				C0C93F4C283283340015BB31 /* MovieDetailsInteractor.swift */,
 				C0C93F47283283340015BB31 /* MovieDetailsPresenter.swift */,
 				C0C93F49283283340015BB31 /* MovieDetailsRouter.swift */,
-				C0C93F48283283340015BB31 /* MovieDetailsWorker.swift */,
 				C0C93F4A283283340015BB31 /* MovieDetailsModels.swift */,
 			);
 			path = MovieDetails;
@@ -240,7 +237,6 @@
 				C0DBACD32817E3AF00920C05 /* MovieCell.swift in Sources */,
 				C0C93F42282C1E6D0015BB31 /* MoviesFeedViewController.swift in Sources */,
 				C0C93F4E283283340015BB31 /* MovieDetailsPresenter.swift in Sources */,
-				C0C93F4F283283340015BB31 /* MovieDetailsWorker.swift in Sources */,
 				C0C93F43282C1E6D0015BB31 /* MoviesFeedInteractor.swift in Sources */,
 				C0DBACBD2817D3C900920C05 /* SceneDelegate.swift in Sources */,
 				C0C93F41282C1E6D0015BB31 /* MoviesFeedModels.swift in Sources */,

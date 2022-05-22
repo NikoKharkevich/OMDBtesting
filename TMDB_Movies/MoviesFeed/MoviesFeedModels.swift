@@ -10,18 +10,16 @@ import UIKit
 
 enum MoviesFeed {
     
-    enum Model {
-        struct Request {
-        }
-        struct Response {
-            enum ResponseType {
-                case presentMoviesFeed([MovieModel])
-            }
-        }
-        struct ViewModel {
-            enum ViewModelData {
-                case displayMoviesFeed([MovieModel])
-            }
+    struct Request {
+    }
+    
+    struct Response {
+        var movies: [MovieModel]
+    }
+    
+    struct ViewModel {
+        enum ViewModelData {
+            case displayMoviesFeed([MovieModel])
         }
     }
     

@@ -21,7 +21,7 @@ import Kingfisher
  */
 
 protocol MoviesFeedDisplayLogic: AnyObject {
-    func displayData(viewModel: MoviesFeed.Model.ViewModel.ViewModelData)
+    func displayData(viewModel: MoviesFeed.ViewModel.ViewModelData)
 }
 
 class MoviesFeedViewController: UIViewController, MoviesFeedDisplayLogic {
@@ -49,10 +49,24 @@ class MoviesFeedViewController: UIViewController, MoviesFeedDisplayLogic {
     
     // MARK: Routing
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard segue.identifier != nil else { return }
-        guard router != nil else { return }
-        let sender = sender as! [String: Any]
-        //        router.routeToMovieDetailsVC(segue: segue, movieId: sender["movieId"] as! String)
+        
+        if segue.identifier != nil {
+            if let router = router {
+                let sender = sender as! [String:Any]
+                router.routeToMovieDetails(segue: segue, movieId: sender["movieId"] as! String)
+            }
+        }
+    }
+    
+    // MARK: Object lifecycle
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
     }
     
     // MARK: View lifecycle
@@ -60,23 +74,23 @@ class MoviesFeedViewController: UIViewController, MoviesFeedDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         moviesTableView.register(MovieCell.self, forCellReuseIdentifier: "MovieCell")
-        setup()
         fetchAllMovies()
-        
     }
     
     private func fetchAllMovies() {
-        let request = MoviesFeed.Model.Request()
+        let request = MoviesFeed.Request()
         interactor?.fetchAllMovies(request: request)
     }
     
     
-    func displayData(viewModel: MoviesFeed.Model.ViewModel.ViewModelData) {
+    func displayData(viewModel: MoviesFeed.ViewModel.ViewModelData) {
         
         switch viewModel {
         case let .displayMoviesFeed(data):
             movies = data
-            moviesTableView.reloadData()
+            DispatchQueue.main.async {
+                self.moviesTableView.reloadData()
+            }
         }
     }
     
@@ -101,20 +115,21 @@ extension MoviesFeedViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let movieId = movies[indexPath.row].id
-//        performSegue(withIdentifier: "goToDetails", sender: ["movieId": movieId])
+        //        let movieId = "tt1790864"
+        performSegue(withIdentifier: "toMovieDetails", sender: ["movieId": movieId])
         
-        guard let detailsVC = storyboard?.instantiateViewController(withIdentifier: "MovieDetailsViewController") as? MovieDetailsViewController else { return }
-        present(detailsVC, animated: true)
-//        navigationController?.pushViewController(detailsVC, animated: true)
-        
-        print("------------------")
-        
+//                guard let detailsVC = storyboard?.instantiateViewController(withIdentifier: "MovieDetailsViewController") as? MovieDetailsViewController else { return }
+//                present(detailsVC, animated: true)
+        //        navigationController?.pushViewController(detailsVC, animated: true)
+        //
+        //        print("------------------")
+        //
         print("Movie pressed: \(movies[indexPath.row].title) / id: \(movieId)")
-        
-        detailsVC.movieLabelTextField?.text = movies[indexPath.row].title
-        print("Movie in details VC: \(detailsVC.movieLabelTextField?.text ?? "")")
-        print("------------------")
-        
-        detailsVC.moviePosterImageView.kf.setImage(with: URL(string: movies[indexPath.row].poster))
+        //
+//                detailsVC.movieLabelTextField?.text = movies[indexPath.row].title
+//                print("Movie in details VC: \(detailsVC.movieLabelTextField?.text ?? "❌")")
+//                print("------------------")
+//
+//                detailsVC.moviePosterImageView?.kf.setImage(with: URL(string: movies[indexPath.row].poster))
     }
 }

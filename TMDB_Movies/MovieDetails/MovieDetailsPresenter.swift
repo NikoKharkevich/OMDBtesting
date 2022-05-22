@@ -9,14 +9,26 @@
 import UIKit
 
 protocol MovieDetailsPresentationLogic {
-    func presentData(response: MovieDetails.Model.Response.ResponseType)
+    func presentMovieDetails(response: MovieDetails.Response)
 }
 
 class MovieDetailsPresenter: MovieDetailsPresentationLogic {
     weak var viewController: MovieDetailsDisplayLogic?
     
-    func presentData(response: MovieDetails.Model.Response.ResponseType) {
+    func presentMovieDetails(response: MovieDetails.Response) {
         
+        guard let movie = response.movie else { return }
+        let title = movie.title
+        let year = movie.year
+        let poster = movie.poster
+        let id = movie.id
+        
+        let displayedMovie = MovieDetails.ViewModel.DisplayedMovie(
+            title: title, year: year, poster: poster, id: id)
+        
+        let viewModel = MovieDetails.ViewModel(displayedMovie: displayedMovie)
+        
+        viewController?.displayMovieDetail(viewModel: viewModel)
     }
     
 }

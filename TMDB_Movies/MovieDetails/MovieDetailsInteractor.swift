@@ -9,7 +9,7 @@
 import UIKit
 
 protocol MovieDetailsBusinessLogic {
-    func makeRequest(request: MovieDetails.Model.Request.RequestType)
+    func makeRequest(request: MovieDetails.Request)
 }
 
 protocol MovieDetailDataStore {
@@ -17,14 +17,17 @@ protocol MovieDetailDataStore {
 }
 
 class MovieDetailsInteractor: MovieDetailsBusinessLogic, MovieDetailDataStore {
-   
+    
     var movieId: String = ""
     var presenter: MovieDetailsPresentationLogic?
-    var service: MovieDetailsService?
+    var service = MoviesNetworkService()
     
-    func makeRequest(request: MovieDetails.Model.Request.RequestType) {
-        if service == nil {
-            service = MovieDetailsService()
+    func makeRequest(request: MovieDetails.Request) {
+        
+        service.fetchMovieDetails(movieid: request.movieId) { movie in
+            guard let movie = movie else { return }
+            let response = MovieDetails.Response(movie: movie)
+            self.presenter?.presentMovieDetails(response: response)
         }
     }
     

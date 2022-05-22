@@ -37,7 +37,7 @@
                     <navigationItem key="navigationItem" title="Movies" id="jEx-Wl-pjh"/>
                     <connections>
                         <outlet property="moviesTableView" destination="JrZ-nL-uWx" id="Ocj-8p-6xb"/>
-                        <segue destination="b2Y-cA-7aP" kind="show" identifier="goToDetails" id="418-7B-ZBv"/>
+                        <segue destination="b2Y-cA-7aP" kind="show" identifier="toMovieDetails" id="418-7B-ZBv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eTb-sL-Wdv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

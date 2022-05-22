@@ -9,7 +9,11 @@
 import UIKit
 
 protocol MoviesFeedBusinessLogic {
-    func fetchAllMovies(request: MoviesFeed.Model.Request)
+    func fetchAllMovies(request: MoviesFeed.Request)
+}
+
+protocol MovieListDataStore {
+    var movies : [MovieModel]? {get}
 }
 
 class MoviesFeedInteractor: MoviesFeedBusinessLogic {
@@ -17,14 +21,14 @@ class MoviesFeedInteractor: MoviesFeedBusinessLogic {
     var presenter: MoviesFeedPresentationLogic?
     var service = MoviesNetworkService()
     
-    func fetchAllMovies(request: MoviesFeed.Model.Request) {
-        
-        service.fetchMoviesData(completion: { data in
-            guard let data = data else { return }
-            print("MoviesFeedInteractor called")
-            self.presenter?.presentData(response: .presentMoviesFeed(data))
-        })
+    func fetchAllMovies(request: MoviesFeed.Request) {
+        service.fetchMoviesData { movies in
+            guard let movies = movies else { return }
+            let response = MoviesFeed.Response(movies: movies)
+            self.presenter?.presentData(response: response)
+        }
     }
+    
 }
 
 

@@ -9,34 +9,35 @@
 import UIKit
 
 protocol MoviesFeedRoutingLogic {
-    func routeToMovieDetailsVC(segue: UIStoryboardSegue?, movieId :String)
+    func routeToMovieDetails(segue: UIStoryboardSegue?, movieId :String)
 }
 
-protocol MovieDataPassing {
-    var dataStore: MovieModel? { get }
+protocol MovieListDataPassing {
+    var dataStore: MovieListDataStore? { get }
 }
 
-class MoviesFeedRouter: MoviesFeedRoutingLogic {
+class MoviesFeedRouter: MoviesFeedRoutingLogic, MovieListDataPassing {
     
     weak var viewController: MoviesFeedViewController?
-    var dataStore: MovieData?
+    var dataStore: MovieListDataStore?
     
     // MARK: Routing
-    func routeToMovieDetailsVC(segue: UIStoryboardSegue?, movieId: String) {
+    func routeToMovieDetails(segue: UIStoryboardSegue?, movieId: String) {
         if let segue = segue {
-            let destinationVC = segue.destination as! MovieDetailsViewController
-            var destinationDataStore = destinationVC.router?.dataStore
-            passDataToShowDetail(source: dataStore!, destination: &destinationDataStore!, movieId: movieId)
+            guard let dataStore = dataStore,
+                  let destinationVC = segue.destination as? MovieDetailsViewController,
+                  var destinationDataStore = destinationVC.router?.dataStore
+//            else { fatalError("Fail route to detail") }
+            else { return }
+            passDataToShowDetail(source: dataStore, destination: &destinationDataStore, movieId: movieId)
         }
     }
     
-    // MARK: Navigation
-    func passDataToShowDetail(source: MovieData, destination: inout MovieDetailDataStore, movieId :String) {
+    // MARK: Passing data
+    func passDataToShowDetail(source: MovieListDataStore, destination: inout MovieDetailDataStore, movieId :String) {
         
         guard let selectedIndexPath = viewController?.moviesTableView.indexPathForSelectedRow else { return }
-        let movies = source.search.map { MovieModel(data: $0) }
-        let movieId = movies[selectedIndexPath.row].id
-        destination.movieId = movieId
+        destination.movieId = source.movies![selectedIndexPath.row].id
     }
     
 }

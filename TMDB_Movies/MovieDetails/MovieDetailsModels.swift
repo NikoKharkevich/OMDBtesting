@@ -10,22 +10,21 @@ import UIKit
 
 enum MovieDetails {
     
-    enum Model {
-        struct Request {
-            enum RequestType {
-                case some
-            }
-        }
-        struct Response {
-            enum ResponseType {
-                case some
-            }
-        }
-        struct ViewModel {
-            enum ViewModelData {
-                case some
-            }
-        }
+    struct Request {
+        var movieId: String
     }
     
+    struct Response {
+        var movie: MovieModel?
+    }
+    
+    struct ViewModel {
+        struct DisplayedMovie {
+            let title: String
+            let year: String
+            let poster: String
+            let id: String
+        }
+        var displayedMovie: DisplayedMovie
+    }
 }
