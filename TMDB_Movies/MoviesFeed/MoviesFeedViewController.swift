@@ -49,12 +49,10 @@ class MoviesFeedViewController: UIViewController {
     
     // MARK: Routing
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier != nil {
-            if let router = router {
-                let sender = sender as! [String:Any]
-                router.routeToMovieDetails(segue: segue, movieId: sender["movieId"] as! String)
-            }
+        if segue.identifier == "toMovieDetails" {
+            guard let router = router else { return }
+            let sender = sender as! [String: Any]
+            router.routeToMovieDetails(segue: segue, movieId: sender["movieId"] as! String)
         }
     }
     
@@ -82,7 +80,6 @@ extension MoviesFeedViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
         cell.configure(movie: movies[indexPath.row])
-        
         return cell
     }
     
@@ -90,16 +87,9 @@ extension MoviesFeedViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let movieId = movies[indexPath.row].id
-        //        let movieId = "tt1790864"
-//        performSegue(withIdentifier: "toMovieDetails", sender: ["movieId": movieId])
+        performSegue(withIdentifier: "toMovieDetails", sender: ["movieId": movieId])
         
-        guard let detailsVC = storyboard?.instantiateViewController(withIdentifier: "MovieDetailsViewController") as? MovieDetailsViewController else { return }
-        present(detailsVC, animated: true)
-//        navigationController?.pushViewController(detailsVC, animated: true)
-        detailsVC.movieLabelTextField?.text = movies[indexPath.row].title
-        detailsVC.moviePosterImageView?.kf.setImage(with: URL(string: movies[indexPath.row].poster))
         print("Movie pressed: \(movies[indexPath.row].title) / id: \(movieId)")
-        print("Movie in details VC: \(detailsVC.movieLabelTextField?.text ?? "❌")")
         print("------------------")
     }
 }

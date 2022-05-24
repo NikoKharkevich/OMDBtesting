@@ -24,7 +24,6 @@ class MovieDetailsViewController: UIViewController {
     @IBAction func changeTextButton(_ sender: UIButton) {
         print(movieLabelTextField.text ?? "")
         changeTextField()
-        self.dismiss(animated: true, completion: nil)
         navigationController?.popViewController(animated: true)
     }
     
@@ -65,7 +64,7 @@ class MovieDetailsViewController: UIViewController {
         guard let router = router,
               let dataStore = router.dataStore else { return }
         let request = MovieDetails.Request(movieId: dataStore.movieId)
-        interactor?.makeRequest(request: request)
+        interactor?.getMovieDetails(request: request)
         
     }
 }
