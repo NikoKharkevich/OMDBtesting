@@ -9,7 +9,7 @@
 import UIKit
 
 protocol MoviesFeedRoutingLogic {
-    func routeToMovieDetails(segue: UIStoryboardSegue?, movieId :String)
+    func routeToDetails(segue: UIStoryboardSegue?, movieId :String)
 }
 
 protocol MovieListDataPassing {
@@ -22,22 +22,31 @@ class MoviesFeedRouter: MoviesFeedRoutingLogic, MovieListDataPassing {
     var dataStore: MovieListDataStore?
     
     // MARK: Routing
-    func routeToMovieDetails(segue: UIStoryboardSegue?, movieId: String) {
-        if let segue = segue {
-            guard let dataStore = dataStore,
-                  let destinationVC = segue.destination as? MovieDetailsViewController,
-                  var destinationDataStore = destinationVC.router?.dataStore
-//            else { fatalError("Fail route to detail") }
-            else { return }
-            passDataToShowDetail(source: dataStore, destination: &destinationDataStore, movieId: movieId)
+    func routeToDetails(segue: UIStoryboardSegue?, movieId :String) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        if let dataStore = dataStore {
+            guard let destinationVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsViewController") as? MovieDetailsViewController,
+                  var destinationDS = destinationVC.router!.dataStore else { return }
+            
+            passDataToDetails(source: dataStore, destination: &destinationDS, movieId: movieId)
+            navigateToDetails(source: viewController!, destination: destinationVC)
+        } else {
+            print("Passing data error ❌")
+            return
         }
     }
     
+    // MARK: Navigation
+    func navigateToDetails(source: MoviesFeedViewController, destination: MovieDetailsViewController) {
+        source.navigationController?.pushViewController(destination, animated: true)
+    }
+    
     // MARK: Passing data
-    func passDataToShowDetail(source: MovieListDataStore, destination: inout MovieDetailDataStore, movieId :String) {
+    func passDataToDetails(source: MovieListDataStore, destination: inout MovieDetailDataStore, movieId :String) {
         
-        guard let selectedIndexPath = viewController?.moviesTableView.indexPathForSelectedRow else { return }
-        destination.movieId = source.movies![selectedIndexPath.row].id
+        guard let selectedIndexPath = viewController?.moviesTableView.indexPathForSelectedRow,
+              let movies = source.movies else { return }
+        destination.movieId = movies[selectedIndexPath.row].id
     }
     
 }

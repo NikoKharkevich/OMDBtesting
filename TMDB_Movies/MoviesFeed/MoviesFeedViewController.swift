@@ -32,6 +32,7 @@ class MoviesFeedViewController: UIViewController {
     var router: (MoviesFeedRoutingLogic & MovieListDataPassing)?
     
     var movies: [MovieModel] = []
+    var selectedIndex: Int?
     
     // MARK: Setup
     
@@ -48,13 +49,12 @@ class MoviesFeedViewController: UIViewController {
     }
     
     // MARK: Routing
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toMovieDetails" {
-            guard let router = router else { return }
-            let sender = sender as! [String: Any]
-            router.routeToMovieDetails(segue: segue, movieId: sender["movieId"] as! String)
-        }
-    }
+//    func moveToDetails() {
+//        guard let index = moviesTableView.indexPathForSelectedRow?.row else { return }
+//        selectedIndex = index
+//        let id = movies[index].id
+//        router?.routeToDetails(segue: nil, movieId: id)
+//    }
     
     // MARK: View lifecycle
     override func viewDidLoad() {
@@ -87,7 +87,8 @@ extension MoviesFeedViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let movieId = movies[indexPath.row].id
-        performSegue(withIdentifier: "toMovieDetails", sender: ["movieId": movieId])
+//        performSegue(withIdentifier: "toMovieDetails", sender: ["movieId": movieId])
+        router?.routeToDetails(segue: nil, movieId: movieId)
         
         print("Movie pressed: \(movies[indexPath.row].title) / id: \(movieId)")
         print("------------------")
