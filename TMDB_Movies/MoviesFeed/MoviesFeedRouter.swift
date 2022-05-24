@@ -9,7 +9,7 @@
 import UIKit
 
 protocol MoviesFeedRoutingLogic {
-    func routeToDetails(segue: UIStoryboardSegue?, movieId :String)
+    func routeToDetails(segue: UIStoryboardSegue?)
 }
 
 protocol MovieListDataPassing {
@@ -22,17 +22,16 @@ class MoviesFeedRouter: MoviesFeedRoutingLogic, MovieListDataPassing {
     var dataStore: MovieListDataStore?
     
     // MARK: Routing
-    func routeToDetails(segue: UIStoryboardSegue?, movieId :String) {
+    func routeToDetails(segue: UIStoryboardSegue?) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let dataStore = dataStore {
             guard let destinationVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsViewController") as? MovieDetailsViewController,
                   var destinationDS = destinationVC.router!.dataStore else { return }
-            
-            passDataToDetails(source: dataStore, destination: &destinationDS, movieId: movieId)
+
+            passDataToDetails(source: dataStore, destination: &destinationDS)
             navigateToDetails(source: viewController!, destination: destinationVC)
         } else {
             print("Passing data error ❌")
-            return
         }
     }
     
@@ -42,11 +41,18 @@ class MoviesFeedRouter: MoviesFeedRoutingLogic, MovieListDataPassing {
     }
     
     // MARK: Passing data
-    func passDataToDetails(source: MovieListDataStore, destination: inout MovieDetailDataStore, movieId :String) {
+    func passDataToDetails(source: MovieListDataStore, destination: inout MovieDetailDataStore) {
         
         guard let selectedIndexPath = viewController?.moviesTableView.indexPathForSelectedRow,
               let movies = source.movies else { return }
-        destination.movieId = movies[selectedIndexPath.row].id
+        let movie = movies[selectedIndexPath.row]
+
+//        destination.movie = movie
+        destination.movie?.title = movie.title
+        destination.movie?.poster = movie.poster
+        destination.movie?.id = movie.id
+        destination.movie?.year = movie.year
+
     }
     
 }

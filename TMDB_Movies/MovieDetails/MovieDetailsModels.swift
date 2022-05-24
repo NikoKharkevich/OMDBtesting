@@ -19,11 +19,19 @@ enum MovieDetails {
     }
     
     struct ViewModel {
+        
         struct DisplayedMovie {
-            let title: String
-            let year: String
-            let poster: String
-            let id: String
+            var title: String
+            var year: String
+            var poster: String
+            var id: String
+
+            init(data: MovieModel) {
+                self.title = data.title
+                self.poster = data.poster
+                self.year = data.year
+                self.id = data.id
+            }
         }
         var displayedMovie: DisplayedMovie
     }

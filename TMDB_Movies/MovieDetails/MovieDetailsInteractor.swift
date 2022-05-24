@@ -13,12 +13,12 @@ protocol MovieDetailsBusinessLogic {
 }
 
 protocol MovieDetailDataStore {
-    var movieId: String { get set }
+    var movie: MovieDetails.ViewModel.DisplayedMovie? { get set }
 }
 
 class MovieDetailsInteractor: MovieDetailsBusinessLogic, MovieDetailDataStore {
 
-    var movieId: String = ""
+    var movie: MovieDetails.ViewModel.DisplayedMovie?
     var presenter: MovieDetailsPresentationLogic?
     var service = MoviesNetworkService()
     

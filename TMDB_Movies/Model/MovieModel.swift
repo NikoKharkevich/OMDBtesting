@@ -9,7 +9,7 @@ import Foundation
 
 struct MovieModel {
     
-    var title: String
+    let title: String
     let year: String
     let poster: String
     let id: String

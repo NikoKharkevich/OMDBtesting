@@ -49,12 +49,6 @@ class MoviesFeedViewController: UIViewController {
     }
     
     // MARK: Routing
-//    func moveToDetails() {
-//        guard let index = moviesTableView.indexPathForSelectedRow?.row else { return }
-//        selectedIndex = index
-//        let id = movies[index].id
-//        router?.routeToDetails(segue: nil, movieId: id)
-//    }
     
     // MARK: View lifecycle
     override func viewDidLoad() {
@@ -85,12 +79,12 @@ extension MoviesFeedViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         let movieId = movies[indexPath.row].id
-//        performSegue(withIdentifier: "toMovieDetails", sender: ["movieId": movieId])
-        router?.routeToDetails(segue: nil, movieId: movieId)
-        
         print("Movie pressed: \(movies[indexPath.row].title) / id: \(movieId)")
+        
+//        performSegue(withIdentifier: "toMovieDetails", sender: nil)
+        router?.routeToDetails(segue: nil)
+        
         print("------------------")
     }
 }

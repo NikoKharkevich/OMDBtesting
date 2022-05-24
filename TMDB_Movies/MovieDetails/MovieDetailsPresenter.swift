@@ -18,14 +18,7 @@ class MovieDetailsPresenter: MovieDetailsPresentationLogic {
     func presentMovieDetails(response: MovieDetails.Response) {
         
         guard let movie = response.movie else { return }
-        let title = movie.title
-        let year = movie.year
-        let poster = movie.poster
-        let id = movie.id
-        
-        let displayedMovie = MovieDetails.ViewModel.DisplayedMovie(
-            title: title, year: year, poster: poster, id: id)
-        
+        let displayedMovie = MovieDetails.ViewModel.DisplayedMovie.init(data: movie)
         let viewModel = MovieDetails.ViewModel(displayedMovie: displayedMovie)
         
         viewController?.displayMovieDetail(viewModel: viewModel)

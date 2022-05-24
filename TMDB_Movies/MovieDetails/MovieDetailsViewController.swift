@@ -63,7 +63,7 @@ class MovieDetailsViewController: UIViewController {
         
         guard let router = router,
               let dataStore = router.dataStore else { return }
-        let request = MovieDetails.Request(movieId: dataStore.movieId)
+        let request = MovieDetails.Request(movieId: dataStore.movie!.id)
         interactor?.getMovieDetails(request: request)
         
     }
