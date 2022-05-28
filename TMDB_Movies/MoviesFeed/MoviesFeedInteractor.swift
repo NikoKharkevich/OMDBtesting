@@ -16,8 +16,8 @@ protocol MovieListDataStore {
     var movies : [MovieModel]? {get}
 }
 
-class MoviesFeedInteractor: MoviesFeedBusinessLogic {
-    
+class MoviesFeedInteractor: MoviesFeedBusinessLogic, MovieListDataStore {
+    var movies: [MovieModel]?
     var presenter: MoviesFeedPresentationLogic?
     var service = MoviesNetworkService()
     

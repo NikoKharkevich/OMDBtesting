@@ -46,6 +46,7 @@ class MoviesFeedViewController: UIViewController {
         interactor.presenter = presenter
         presenter.viewController = viewController
         router.viewController = viewController
+        router.dataStore = interactor
     }
     
     // MARK: Routing
@@ -82,8 +83,7 @@ extension MoviesFeedViewController: UITableViewDelegate, UITableViewDataSource {
         let movieId = movies[indexPath.row].id
         print("Movie pressed: \(movies[indexPath.row].title) / id: \(movieId)")
         
-//        performSegue(withIdentifier: "toMovieDetails", sender: nil)
-        router?.routeToDetails(segue: nil)
+        router?.routeToDetails(movie: movies[indexPath.row])
         
         print("------------------")
     }

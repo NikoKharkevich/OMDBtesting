@@ -9,7 +9,7 @@
 import UIKit
 
 protocol MoviesFeedRoutingLogic {
-    func routeToDetails(segue: UIStoryboardSegue?)
+    func routeToDetails(movie: MovieModel)
 }
 
 protocol MovieListDataPassing {
@@ -22,13 +22,13 @@ class MoviesFeedRouter: MoviesFeedRoutingLogic, MovieListDataPassing {
     var dataStore: MovieListDataStore?
     
     // MARK: Routing
-    func routeToDetails(segue: UIStoryboardSegue?) {
+    func routeToDetails(movie: MovieModel) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         if let dataStore = dataStore {
             guard let destinationVC = storyboard.instantiateViewController(withIdentifier: "MovieDetailsViewController") as? MovieDetailsViewController,
                   var destinationDS = destinationVC.router!.dataStore else { return }
 
-            passDataToDetails(source: dataStore, destination: &destinationDS)
+            passDataToDetails(source: dataStore, destination: &destinationDS, movie: movie)
             navigateToDetails(source: viewController!, destination: destinationVC)
         } else {
             print("Passing data error ❌")
@@ -41,18 +41,8 @@ class MoviesFeedRouter: MoviesFeedRoutingLogic, MovieListDataPassing {
     }
     
     // MARK: Passing data
-    func passDataToDetails(source: MovieListDataStore, destination: inout MovieDetailDataStore) {
-        
-        guard let selectedIndexPath = viewController?.moviesTableView.indexPathForSelectedRow,
-              let movies = source.movies else { return }
-        let movie = movies[selectedIndexPath.row]
-
-//        destination.movie = movie
-        destination.movie?.title = movie.title
-        destination.movie?.poster = movie.poster
-        destination.movie?.id = movie.id
-        destination.movie?.year = movie.year
-
+    func passDataToDetails(source: MovieListDataStore, destination: inout MovieDetailDataStore, movie: MovieModel) {
+        destination.movie = .init(data: movie)
     }
     
 }
